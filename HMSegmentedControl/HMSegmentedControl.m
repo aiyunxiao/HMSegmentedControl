@@ -5,6 +5,7 @@
 //  Created by Hesham Abd-Elmegid on 23/12/12.
 //  Copyright (c) 2012-2015 Hesham Abd-Elmegid. All rights reserved.
 //
+#define kMinWidth 52
 
 #import "HMSegmentedControl.h"
 #import <QuartzCore/QuartzCore.h>
@@ -238,6 +239,9 @@
     } else {
         NSAssert(title == nil, @"Unexpected type of segment title: %@", [title class]);
         size = CGSizeZero;
+    }
+    if (size.width<kMinWidth) {
+        size=CGSizeMake(kMinWidth, size.height);
     }
     return CGRectIntegral((CGRect){CGPointZero, size}).size;
 }
@@ -535,6 +539,7 @@
     if (self.borderType & HMSegmentedControlBorderTypeBottom) {
         CALayer *borderLayer = [CALayer layer];
         borderLayer.frame = CGRectMake(0, fullRect.size.height - self.borderWidth, fullRect.size.width, self.borderWidth);
+        borderLayer.frame = CGRectMake(0, fullRect.size.height - self.borderWidth, self.frame.size.width, self.borderWidth); //TODO:使用自适应宽度的话底部宽度不正确,临时修改
         borderLayer.backgroundColor = self.borderColor.CGColor;
         [backgroundLayer addSublayer: borderLayer];
     }
